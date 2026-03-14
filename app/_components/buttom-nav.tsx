@@ -3,7 +3,7 @@ import { House, Calendar, ChartNoAxesColumn, UserRound } from "lucide-react";
 import dayjs from "dayjs";
 import { getHomeData } from "@/app/_lib/api/fetch-generated";
 import { cn } from "@/lib/utils";
-//import { ChatOpenButton } from "@/app/_components/chat-open-button";
+import { ChatOpenButton } from "@/app/_components/chat-open-button";
 
 interface BottomNavProps {
   activePage?: "home" | "calendar" | "stats" | "profile";
@@ -51,7 +51,7 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
           />
         </button>
       )}
-      {/* <ChatOpenButton /> */}
+      <ChatOpenButton />
       <Link href="/stats" className="p-3">
         <ChartNoAxesColumn
           className={cn(
