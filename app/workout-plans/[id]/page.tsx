@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Goal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { BottomNav } from "@/app/_components/buttom-nav";
+import { BottomNav } from "@/app/_components/bottom-nav";
 import { WorkoutDayCard } from "@/app/_components/workout-day-card";
 import { RestDayCard } from "./_components/rest-day-card";
 

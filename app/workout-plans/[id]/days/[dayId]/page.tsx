@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { Calendar, Timer, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BottomNav } from "@/app/_components/buttom-nav";
+import { BottomNav } from "@/app/_components/bottom-nav";
 import { BackButton } from "./_components/back-button";
 import { ExerciseCard } from "./_components/exercise-card";
 import { StartWorkoutButton } from "./_components/start-workout-button";

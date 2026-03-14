@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Flame } from "lucide-react";
-import { BottomNav } from "./_components/buttom-nav";
+import { BottomNav } from "./_components/bottom-nav";
 import { ConsistencyTracker } from "./_components/consistency-tracker";
 import { WorkoutDayCard } from "./_components/workout-day-card";
 
