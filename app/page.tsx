@@ -39,7 +39,7 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background pb-24">
-      <div className="relative flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-[20px] px-5 pb-10 pt-5">
+      <div className="relative flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5">
         <div className="absolute inset-0" aria-hidden="true">
           <Image
             src="/home-banner.jpg"
