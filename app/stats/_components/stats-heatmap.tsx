@@ -1,5 +1,11 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
 import type { GetStats200ConsistencyByDay } from "@/app/_lib/api/fetch-generated";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface StatsHeatmapProps {
   consistencyByDay: GetStats200ConsistencyByDay;
@@ -91,7 +97,9 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
               return (
                 <div key={weekKey} className="flex flex-col gap-1">
                   {week.dates.map((date) => {
-                    const dateStr = date.format("YYYY-MM-DD");
+                    const dateStr = date
+                      .tz("America/Sao_Paulo")
+                      .format("YYYY-MM-DD");
                     const dayData = consistencyByDay[dateStr];
 
                     if (dayData?.workoutDayCompleted) {
