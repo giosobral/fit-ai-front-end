@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { getHomeData, getUserTrainData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
 import { Chat } from "@/app/_components/chat";
@@ -14,8 +14,9 @@ export default async function OnboardingPage() {
 
   if (!session.data?.user) redirect("/auth");
 
+  const timezone = (await cookies()).get("timezone")?.value;
   const [homeData, trainData] = await Promise.all([
-    getHomeData(dayjs().format("YYYY-MM-DD")),
+    getHomeData(dayjs().format("YYYY-MM-DD"), { timezone }),
     getUserTrainData(),
   ]);
 

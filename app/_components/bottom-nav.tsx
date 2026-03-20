@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { House, Calendar, ChartNoAxesColumn, UserRound } from "lucide-react";
 import dayjs from "dayjs";
 import { getHomeData } from "@/app/_lib/api/fetch-generated";
@@ -11,7 +12,8 @@ interface BottomNavProps {
 
 export async function BottomNav({ activePage = "home" }: BottomNavProps) {
   const today = dayjs();
-  const homeData = await getHomeData(today.format("YYYY-MM-DD"));
+  const timezone = (await cookies()).get("timezone")?.value;
+  const homeData = await getHomeData(today.format("YYYY-MM-DD"), { timezone });
 
   const calendarHref =
     homeData.status === 200 && homeData.data.activeWorkoutPlanId

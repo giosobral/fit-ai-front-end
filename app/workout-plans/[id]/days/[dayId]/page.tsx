@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import {
   getWorkoutDay,
   getHomeData,
@@ -50,9 +50,10 @@ export default async function WorkoutDayPage({
   if (!session.data?.user) redirect("/auth");
 
   const { id: workoutPlanId, dayId } = await params;
+  const timezone = (await cookies()).get("timezone")?.value;
   const [workoutDayData, homeData, trainData] = await Promise.all([
     getWorkoutDay(workoutPlanId, dayId),
-    getHomeData(dayjs().format("YYYY-MM-DD")),
+    getHomeData(dayjs().format("YYYY-MM-DD"), { timezone }),
     getUserTrainData(),
   ]);
 

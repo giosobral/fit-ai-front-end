@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import {
   getStats,
   getHomeData,
@@ -31,10 +31,11 @@ export default async function StatsPage() {
   const today = dayjs();
   const from = today.subtract(2, "month").startOf("month").format("YYYY-MM-DD");
   const to = today.endOf("month").format("YYYY-MM-DD");
+  const timezone = (await cookies()).get("timezone")?.value;
 
   const [statsResponse, homeData, trainData] = await Promise.all([
-    getStats({ from, to }),
-    getHomeData(today.format("YYYY-MM-DD")),
+    getStats({ from, to, timezone }),
+    getHomeData(today.format("YYYY-MM-DD"), { timezone }),
     getUserTrainData(),
   ]);
 

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { authClient } from "@/app/_lib/auth-client";
 import { getUserTrainData, getHomeData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
@@ -17,9 +17,10 @@ export default async function ProfilePage() {
 
   if (!session.data?.user) redirect("/auth");
 
+  const timezone = (await cookies()).get("timezone")?.value;
   const [trainData, homeData] = await Promise.all([
     getUserTrainData(),
-    getHomeData(dayjs().format("YYYY-MM-DD")),
+    getHomeData(dayjs().format("YYYY-MM-DD"), { timezone }),
   ]);
 
   if (trainData.status !== 200) {

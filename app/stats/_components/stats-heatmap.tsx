@@ -97,10 +97,10 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
               return (
                 <div key={weekKey} className="flex flex-col gap-1">
                   {week.dates.map((date) => {
-                    const dateStr = date
-                      .tz("America/Sao_Paulo")
-                      .format("YYYY-MM-DD");
+                    const dateStr = date.format("YYYY-MM-DD");
                     const dayData = consistencyByDay[dateStr];
+
+                    console.log(dateStr);
 
                     if (dayData?.workoutDayCompleted) {
                       return (
