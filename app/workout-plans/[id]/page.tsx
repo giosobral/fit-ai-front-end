@@ -7,6 +7,11 @@ import {
   getUserTrainData,
 } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezonePlugin from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezonePlugin);
 import Image from "next/image";
 import Link from "next/link";
 import { Goal } from "lucide-react";
@@ -40,9 +45,10 @@ export default async function WorkoutPlanPage({
 
   const { id } = await params;
   const timezone = (await cookies()).get("timezone")?.value;
+  const today = timezone ? dayjs().tz(timezone) : dayjs();
   const [workoutPlanData, homeData, trainData] = await Promise.all([
     getWorkoutPlan(id),
-    getHomeData(dayjs().format("YYYY-MM-DD"), { timezone }),
+    getHomeData(today.format("YYYY-MM-DD"), { timezone }),
     getUserTrainData(),
   ]);
 

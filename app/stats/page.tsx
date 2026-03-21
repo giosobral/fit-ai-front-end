@@ -7,6 +7,11 @@ import {
   getUserTrainData,
 } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezonePlugin from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezonePlugin);
 import { CircleCheck, CirclePercent, Hourglass } from "lucide-react";
 import { BottomNav } from "@/app/_components/bottom-nav";
 import { StreakBanner } from "./_components/streak-banner";
@@ -28,10 +33,10 @@ export default async function StatsPage() {
 
   if (!session.data?.user) redirect("/auth");
 
-  const today = dayjs();
+  const timezone = (await cookies()).get("timezone")?.value;
+  const today = timezone ? dayjs().tz(timezone) : dayjs();
   const from = today.subtract(2, "month").startOf("month").format("YYYY-MM-DD");
   const to = today.endOf("month").format("YYYY-MM-DD");
-  const timezone = (await cookies()).get("timezone")?.value;
 
   const [statsResponse, homeData, trainData] = await Promise.all([
     getStats({ from, to, timezone }),

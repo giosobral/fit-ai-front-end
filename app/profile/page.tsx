@@ -3,6 +3,11 @@ import { headers, cookies } from "next/headers";
 import { authClient } from "@/app/_lib/auth-client";
 import { getUserTrainData, getHomeData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezonePlugin from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezonePlugin);
 import { BottomNav } from "@/app/_components/bottom-nav";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Weight, Ruler, BicepsFlexed, User } from "lucide-react";
@@ -18,9 +23,10 @@ export default async function ProfilePage() {
   if (!session.data?.user) redirect("/auth");
 
   const timezone = (await cookies()).get("timezone")?.value;
+  const today = timezone ? dayjs().tz(timezone) : dayjs();
   const [trainData, homeData] = await Promise.all([
     getUserTrainData(),
-    getHomeData(dayjs().format("YYYY-MM-DD"), { timezone }),
+    getHomeData(today.format("YYYY-MM-DD"), { timezone }),
   ]);
 
   if (trainData.status !== 200) {

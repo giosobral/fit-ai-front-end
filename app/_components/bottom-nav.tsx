@@ -2,6 +2,11 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { House, Calendar, ChartNoAxesColumn, UserRound } from "lucide-react";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezonePlugin from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezonePlugin);
 import { getHomeData } from "@/app/_lib/api/fetch-generated";
 import { cn } from "@/lib/utils";
 import { ChatOpenButton } from "@/app/_components/chat-open-button";
@@ -11,8 +16,8 @@ interface BottomNavProps {
 }
 
 export async function BottomNav({ activePage = "home" }: BottomNavProps) {
-  const today = dayjs();
   const timezone = (await cookies()).get("timezone")?.value;
+  const today = timezone ? dayjs().tz(timezone) : dayjs();
   const homeData = await getHomeData(today.format("YYYY-MM-DD"), { timezone });
 
   const calendarHref =

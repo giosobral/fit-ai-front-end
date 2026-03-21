@@ -3,6 +3,11 @@ import { authClient } from "@/app/_lib/auth-client";
 import { headers, cookies } from "next/headers";
 import { getHomeData, getUserTrainData } from "./_lib/api/fetch-generated";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezonePlugin from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezonePlugin);
 import Image from "next/image";
 import Link from "next/link";
 import { Flame } from "lucide-react";
@@ -19,8 +24,8 @@ export default async function Home() {
 
   if (!session.data?.user) redirect("/auth");
 
-  const today = dayjs();
   const timezone = (await cookies()).get("timezone")?.value;
+  const today = timezone ? dayjs().tz(timezone) : dayjs();
   const [homeData, trainData] = await Promise.all([
     getHomeData(today.format("YYYY-MM-DD"), { timezone }),
     getUserTrainData(),
