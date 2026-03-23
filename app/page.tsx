@@ -14,6 +14,7 @@ import { Flame } from "lucide-react";
 import { BottomNav } from "./_components/bottom-nav";
 import { ConsistencyTracker } from "./_components/consistency-tracker";
 import { WorkoutDayCard } from "./_components/workout-day-card";
+import { QuickStartButton } from "./_components/quick-start-button";
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -79,11 +80,12 @@ export default async function Home() {
               Bora treinar hoje?
             </p>
           </div>
-          <div className="rounded-full bg-primary px-4 py-2">
-            <span className="font-heading text-sm font-semibold text-primary-foreground">
-              Bora!
-            </span>
-          </div>
+          {todayWorkoutDay && (
+            <QuickStartButton
+              workoutPlanId={todayWorkoutDay.workoutPlanId}
+              workoutDayId={todayWorkoutDay.id}
+            />
+          )}
         </div>
       </div>
 

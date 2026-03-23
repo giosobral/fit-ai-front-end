@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Projetos/fit-ai-api/src -type f \\\\\\(-name *.ts -o -name *.prisma \\\\\\))"
+    ]
+  }
+}
