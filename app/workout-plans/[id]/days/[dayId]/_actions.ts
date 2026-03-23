@@ -10,7 +10,14 @@ export async function startWorkoutAction(
   workoutPlanId: string,
   workoutDayId: string,
 ) {
-  await startWorkoutSession(workoutPlanId, workoutDayId);
+  const result = await startWorkoutSession(workoutPlanId, workoutDayId);
+
+  if (result.status !== 201 && result.status !== 409) {
+    throw new Error(
+      `error:${result.status} data:${JSON.stringify("data" in result ? result.data : null)}`,
+    );
+  }
+
   revalidatePath(`/workout-plans/${workoutPlanId}/days/${workoutDayId}`);
 }
 
@@ -19,8 +26,20 @@ export async function completeWorkoutAction(
   workoutDayId: string,
   sessionId: string,
 ) {
-  await updateWorkoutSession(workoutPlanId, workoutDayId, sessionId, {
-    completedAt: new Date().toISOString(),
-  });
+  const result = await updateWorkoutSession(
+    workoutPlanId,
+    workoutDayId,
+    sessionId,
+    {
+      completedAt: new Date().toISOString(),
+    },
+  );
+
+  if (result.status !== 200) {
+    throw new Error(
+      `error:${result.status} data:${JSON.stringify("data" in result ? result.data : null)}`,
+    );
+  }
+
   revalidatePath(`/workout-plans/${workoutPlanId}/days/${workoutDayId}`);
 }
