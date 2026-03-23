@@ -9,9 +9,11 @@ import {
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezonePlugin from "dayjs/plugin/timezone";
+import isoWeek from "dayjs/plugin/isoWeek";
 
 dayjs.extend(utc);
 dayjs.extend(timezonePlugin);
+dayjs.extend(isoWeek);
 import Image from "next/image";
 import { Calendar, Timer, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,7 +68,7 @@ export default async function WorkoutDayPage({
   const needsOnboarding =
     (homeData.status === 200 && !homeData.data.activeWorkoutPlanId) ||
     (trainData.status === 200 && !trainData.data);
-  //if (needsOnboarding) redirect("/onboarding");
+  if (needsOnboarding) redirect("/onboarding");
 
   if (workoutDayData.status !== 200) redirect("/");
 
@@ -81,8 +83,12 @@ export default async function WorkoutDayPage({
 
   const durationInMinutes = Math.round(estimatedDurationInSeconds / 60);
 
+  const startOfCurrentWeek = today.startOf("isoWeek");
+
   const inProgressSession = sessions.find((s) => s.startedAt && !s.completedAt);
-  const completedSession = sessions.find((s) => s.completedAt);
+  const completedSession = sessions.find(
+    (s) => s.completedAt && !dayjs(s.completedAt).isBefore(startOfCurrentWeek, "day"),
+  );
   const hasInProgressSession = !!inProgressSession;
   const hasCompletedSession = !!completedSession;
 
